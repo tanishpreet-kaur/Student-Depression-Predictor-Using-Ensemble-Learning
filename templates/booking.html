@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Consultation Booking</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 1.6;
+                transition: background-color 0.5s, filter 0.5s;
+                background-image: url("static/wallpaper.jpeg");
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+                background-repeat: no-repeat;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #555;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #777;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 200px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .info-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .info-section p {
+            line-height: 1.6;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info-section">
+            <h1>Book Your Mental Health Consultation</h1>
+            <p>Taking care of your mental well-being is a sign of strength. Our experienced therapists are here to provide you with confidential and supportive guidance.</p>
+            <p>Please fill out the form below to request a consultation.</p>
+            <p>We offer support for anxiety, depression, stress management, relationship issues, and more.</p>
+        </div>
+
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+
+            <div class="form-group">
+                <label for="preferredDate">Preferred Date:</label>
+                <input type="date" id="preferredDate" name="preferredDate">
+            </div>
+
+            <div class="form-group">
+                <label for="preferredTime">Preferred Time:</label>
+                <input type="time" id="preferredTime" name="preferredTime">
+            </div>
+
+            <div class="form-group">
+                <label for="reason">Reason for Consultation:</label>
+                <textarea id="reason" name="reason" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="therapistPreference">Preferred Therapist:</label>
+                <select id="therapistPreference" name="therapistPreference">
+                    <option value="">No preference</option>
+                    <option value="therapist1">Tanishpreet Kaur</option>
+                    </select>
+            </div>
+
+            <button type="submit">Request Consultation</button>
+        </form>
+
+        <div id="confirmationMessage" style="display:none; margin-top: 20px; text-align: center; color: green;">
+            Thank you for your request! We will be in touch with you shortly to confirm your booking.
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                preferredDate: document.getElementById('preferredDate').value,
+                preferredTime: document.getElementById('preferredTime').value,
+                reason: document.getElementById('reason').value,
+                therapistPreference: document.getElementById('therapistPreference').value
+            };
+        
+            fetch('http://localhost:5000/send_email', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('confirmationMessage').style.display = 'block';
+                    document.getElementById('bookingForm').reset();
+                } else {
+                    alert("Failed to send email.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
